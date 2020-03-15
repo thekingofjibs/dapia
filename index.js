@@ -1,8 +1,11 @@
 const express = require('express')
-var app = express()
-var http = require('http').createServer(app)
 var bodyParser = require("body-parser");
-var io = require("socket.io")(http);
+
+var app = express();
+var http = require( "http" ).createServer( app );
+var io = require( "socket.io" )( http );
+
+io.origins('*:*')
 
 var name1 = ""
 var name2 = ""
@@ -11,6 +14,12 @@ var score2 = 0
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.get('/', function(req, res){
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+   res.send('');
+});
 
 app.post('/score',function(req,res){
   name1 = req.body.name1;
@@ -22,7 +31,7 @@ app.post('/score',function(req,res){
   res.end("done");
 });
 
-app.listen(8080,function(){
+http.listen(8080,function(){
   console.log("Started on PORT 8080");
 })
 

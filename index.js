@@ -1,27 +1,25 @@
 const express = require('express')
 var bodyParser = require("body-parser");
-
 var app = express();
 var http = require( "http" ).createServer( app );
 var io = require( "socket.io" )( http );
 
-io.origins('*:*')
-
-var name1 = ""
-var name2 = ""
-var score1 = 0
-var score2 = 0
+io.origins('*:*') //allow CORS on websocket
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res){
+http.listen(8080,function(){
+  console.log("Started on PORT 8080");
+})
+
+app.get('/', function(req, res){ //Allow CORS on site (might not be needed at all)
    res.header("Access-Control-Allow-Origin", "*");
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
    res.send('');
 });
 
-app.post('/score',function(req,res){
+app.post('/update',function(req,res){
   name1 = req.body.name1;
   name2 = req.body.name2;
   score1 = req.body.score1;
@@ -31,10 +29,6 @@ app.post('/score',function(req,res){
   res.end("done");
 });
 
-http.listen(8080,function(){
-  console.log("Started on PORT 8080");
-})
-
 io.on('connection', function(socket){
   console.log("template connected");
   socket.on('getScore',function(args){
@@ -42,3 +36,12 @@ io.on('connection', function(socket){
     console.log("score sent");
   });
 })
+
+
+var name1 = ""
+var name2 = ""
+var score1 = 0
+var score2 = 0
+
+// add authentication, add config file and scalability
+// write client

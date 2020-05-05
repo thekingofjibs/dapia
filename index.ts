@@ -30,8 +30,8 @@ io.origins("*:*"); //allow CORS on websocket
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-http.listen(8080, function () {
-  console.log("Started on PORT 8080");
+http.listen(settings.port, function () {
+  console.log("Started on PORT ", settings.port);
 });
 
 // REQUESTS

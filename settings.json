@@ -1,1 +1,1 @@
-{ "auth": false, "user": "ADMIN", "password": "IhasALLthedatas" }
+{ "auth": false, "user": "ADMIN", "password": "IhasALLthedatas", "port": 8080 }

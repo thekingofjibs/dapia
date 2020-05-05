@@ -1,5 +1,5 @@
 {
-  "team1_name": { "default": "TestTeamName", "readOnly": false },
-  "team2_name": { "default": "TestTeamName2", "readOnly": false },
-  "team3_name": { "default": "TestTeamName3", "readOnly": true }
+  "team1_name": { "default": "TestTeamName", "readOnly": true },
+  "team1_score": { "default": 0, "readOnly": false },
+  "gameover": { "default": false, "readOnly": false }
 }

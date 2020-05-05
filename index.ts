@@ -3,6 +3,7 @@ var bodyParser = require("body-parser");
 var app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
+const settings = require("./settings.json");
 const dataConfig = require("./conf.json");
 var dataStore = {};
 
@@ -56,16 +57,26 @@ io.on("connection", function (socket) {
 
 // UPDATE
 app.post("/update", function (req, res) {
-  try {
-    Object.keys(req.body).map((key) => {
-      dataWrite(key, req.body[key]);
-    });
+  if (
+    settings.auth === false ||
+    (settings.auth === true &&
+      req.headers.user == settings.user &&
+      req.headers.password == settings.password)
+  ) {
+    try {
+      Object.keys(req.body).map((key) => {
+        dataWrite(key, req.body[key]);
+      });
 
-    console.log(req.body, "updated to: ", dataStore);
-    io.emit("scoreUpdate", dataReadAll());
-    res.end("received");
-  } catch {
-    res.end("error updating");
+      console.log(req.body, "updated to: ", dataStore);
+      io.emit("scoreUpdate", dataReadAll());
+      res.end("received");
+    } catch {
+      res.end("error updating");
+    }
+  } else {
+    res.sendStatus(401);
+    res.end();
   }
 });
 
